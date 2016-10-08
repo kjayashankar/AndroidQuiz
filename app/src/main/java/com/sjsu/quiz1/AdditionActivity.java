@@ -8,14 +8,10 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +23,8 @@ import java.util.Random;
 
 public class AdditionActivity extends AppCompatActivity {
 
-    Toast toast;
+    Toast toast = null;
+    Toast toastValid = null;
     int presentQuestion ;
     CustomTimer timerClock;
     TextView timer ;
@@ -88,8 +85,6 @@ public class AdditionActivity extends AppCompatActivity {
             }
 
         });
-
-
         b2.setOnClickListener( new View.OnClickListener(){
 
             @Override
@@ -178,8 +173,7 @@ public class AdditionActivity extends AppCompatActivity {
                 String existing = num1.getText().toString();
                 String e = getIntValue(existing);
                 if(e.length() > 2 || e.length() == 0) {
-                    Toast t = Toast.makeText(getApplicationContext(),"Enter valid number",Toast.LENGTH_SHORT);
-                    t.show();
+                    showToast("Enter valid number");
                 }
                 else {
                     int givenAnswer = Integer.parseInt(e);
@@ -192,8 +186,16 @@ public class AdditionActivity extends AppCompatActivity {
 
         });
 
-
     }
+
+    public void showToast(String msg) {
+        if(toastValid != null){
+            toastValid.cancel();
+        }
+        toastValid = Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT);
+        toastValid.show();
+    }
+
     public void updateAnswer(int i){
         TextView num1 = (TextView) findViewById(R.id.answer);
         String existing = num1.getText().toString();
@@ -208,8 +210,7 @@ public class AdditionActivity extends AppCompatActivity {
         else
             value=e+i;
         if(value.length() > 2){
-            Toast t = Toast.makeText(getApplicationContext(), "Number cannot exceed 2 digits", Toast.LENGTH_SHORT);
-            t.show();
+            showToast("Number cannot exceed 2 digits");
         }
         else
             num1.setText("Answer : "+value);
@@ -243,6 +244,8 @@ public class AdditionActivity extends AppCompatActivity {
     }
     public void nextScreen(final boolean answer) {
 
+        if(toastValid != null)
+            toastValid.cancel();
 
         toast = new Toast(getApplicationContext());
 
@@ -289,20 +292,19 @@ public class AdditionActivity extends AppCompatActivity {
                 finish();
                 startActivity(newIntent);
             } else {
-
-                Intent newIntent = new Intent(getApplicationContext(), EndActivity.class);
-                newIntent.putExtra("True", nTrueQuestions);
-                newIntent.putExtra("ParentClassSource", "com.sjsu.quiz1.HomeActivity");
-
-                newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 if (toast != null)
-                    //toast.cancel();
-                    finish();
-
-                startActivity(newIntent);
+                    toast.cancel();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Your score is "+nTrueQuestions +" / 10");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        AdditionActivity.super.onBackPressed();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
             }
-
-
     }
 
     class CustomTimer extends CountDownTimer {
