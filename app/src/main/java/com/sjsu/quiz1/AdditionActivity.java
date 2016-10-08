@@ -3,11 +3,14 @@ package com.sjsu.quiz1;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -23,43 +26,70 @@ import java.util.Random;
 
 public class AdditionActivity extends AppCompatActivity {
 
+    int n1;
+    int n2;
+    int correctAnswer;
     Toast toast = null;
     Toast toastValid = null;
     int presentQuestion ;
-    CustomTimer timerClock;
+    CustomTimer timerClock = null;
     TextView timer ;
     boolean isPaused = false;
     ImageView trueView ;
     ImageView falseView ;
+    String answerString;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(0, 0);
         setContentView(R.layout.add_activity);
+
+        Random random = new Random();
+        n1 = random.nextInt(10);
+        n2 = random.nextInt(10);
+        correctAnswer = n1+n2;
+        presentQuestion = getIntent().getIntExtra("presentQuestion",1);
+
+        init();
+
+    }
+
+    public void init(){
+
+        if(timerClock != null ) {
+            timerClock.pause();
+            timerClock = new CustomTimer(timerClock.resume,1000);
+            timer = (TextView) findViewById(R.id.timer);
+            timerClock.setView(timer);
+        }
+        else {
+            timerClock = new CustomTimer(5000, 1000);
+            timer = (TextView) findViewById(R.id.timer);
+            timerClock.setView(timer);
+        }
+
         LayoutInflater inflater = getLayoutInflater();
         trueView = new ImageView(getApplicationContext());
         trueView.setImageResource(R.drawable.green_min);
         falseView = new ImageView(getApplicationContext());
         falseView.setImageResource(R.drawable.red_wrong);
-        timerClock = new CustomTimer(5000,1000);
-        timer = (TextView) findViewById(R.id.timer);
-        timerClock.setView(timer);
 
-        presentQuestion = getIntent().getIntExtra("presentQuestion",1);
+
+        TextView answ = (TextView) findViewById(R.id.answer);
+        answ.setText(answerString);
+
+
         TextView presQ = (TextView) findViewById(R.id.gap);
-        presQ.setText(presentQuestion+" / 10");
+        presQ.setText("Q : "+presentQuestion+" / 10");
 
 
-        Random random = new Random();
-        int n1 = random.nextInt(10);
-        int n2 = random.nextInt(10);
-        final int correctAnswer = n1+n2;
+
         TextView num1 = (TextView) findViewById(R.id.num1);
-        num1.setTextSize(45);
+        num1.setTextSize(30);
         num1.setText(n1+"");
         TextView num2 = (TextView) findViewById(R.id.num2);
-        num2.setTextSize(45);
+        num2.setTextSize(30);
         num2.setText(n2+"");
 
         timerClock.start();
@@ -198,25 +228,24 @@ public class AdditionActivity extends AppCompatActivity {
 
     public void updateAnswer(int i){
         TextView num1 = (TextView) findViewById(R.id.answer);
-        String existing = num1.getText().toString();
-        String e = getIntValue(existing);
-        String value;
+        answerString = num1.getText().toString();
+        String e = getIntValue(answerString);
 
         if(e.length() > 2) {
             e="";
         }
         if(i == 11)
-            value="";
+            answerString="";
         else
-            value=e+i;
-        if(value.length() > 2){
+            answerString=e+i;
+        if(answerString.length() > 2){
             showToast("Number cannot exceed 2 digits");
         }
         else
-            num1.setText("Answer : "+value);
+            num1.setText(answerString);
     }
     public String getIntValue(String existing) {
-        return existing.split(":")[1].trim();
+        return existing;
     }
 
     @Override
@@ -321,10 +350,13 @@ public class AdditionActivity extends AppCompatActivity {
 
         public void onTick(long millisUntilFinished) {
                 resume = millisUntilFinished;
-                timer.setText("seconds remaining: " + millisUntilFinished / 1000);
+                timer.setTextSize(25);
+                timer.setText("Timer : " + millisUntilFinished / 1000);
         }
 
         public void onFinish() {
+
+            timer.setText("Timer : 0" );
             nextScreen(false);
         }
 
@@ -358,6 +390,26 @@ public class AdditionActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setContentView(R.layout.add_activity);
+        init();
+        /*timerClock.pause();
+        timerClock = timerClock.resume();
+        timerClock.setView(timer);
+        timerClock.start();
+        TextView num1 = (TextView) findViewById(R.id.num1);
+        num1.setTextSize(30);
+        num1.setText(n1+"");
+        TextView num2 = (TextView) findViewById(R.id.num2);
+        num2.setTextSize(30);
+        num2.setText(n2+"");
+        TextView presQ = (TextView) findViewById(R.id.gap);
+        presQ.setText("Q : "+presentQuestion+" / 10");
+        */
+
+    }
 
 
 }

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/holo_blue_light"
+            android:gravity="center"
+            >
+            <Button
+                android:id="@+id/one"
+                style="@style/key"
+                android:text="@string/number_one"/>
+
+            <Button
+                android:id="@+id/two"
+                style="@style/key"
+                android:text="@string/number_two"/>
+
+            <Button
+                android:id="@+id/three"
+                style="@style/key"
+                android:text="@string/number_three"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/holo_blue_light"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/four"
+                style="@style/key"
+                android:text="@string/number_four"/>
+
+            <Button
+                android:id="@+id/five"
+                style="@style/key"
+                android:text="@string/number_five"/>
+
+            <Button
+                android:id="@+id/six"
+                style="@style/key"
+                android:text="@string/number_six"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/holo_blue_light"
+            android:gravity="center"
+            android:showDividers="middle" >
+
+            <Button
+                android:id="@+id/seven"
+                style="@style/key"
+                android:text="@string/number_seven"/>
+
+            <Button
+                android:id="@+id/eight"
+                style="@style/key"
+                android:text="@string/number_eight"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:id="@+id/nine"
+                style="@style/key"
+                android:text="@string/number_nine"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/holo_blue_light"
+            android:gravity="center"
+            android:showDividers="middle" >
+            <Button
+                android:id="@+id/clear"
+                style="@style/key"
+                android:text="@string/clear"/>
+            <Button
+                android:id="@+id/zero"
+                style="@style/key"
+                android:text="@string/number_zero"/>
+
+        </TableRow>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/key"
+            android:text="@string/enter"
+            android:id="@+id/enter"/>
+    </TableLayout>
+</LinearLayout>

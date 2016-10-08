@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/horiz">
+                <TextView
+                    android:text="TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/timer"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:orientation="vertical"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/gap"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="30dp"
+                    android:layout_below="@+id/num2"
+                    />
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:textSize="30dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/num1"
+                android:orientation="vertical"/>
+
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:srcCompat="@drawable/plus"
+                android:id="@+id/imageView"
+                android:adjustViewBounds="false"
+                android:layout_below="@+id/num1"
+                />
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:id="@+id/num2"
+                android:orientation="vertical"
+                android:layout_below="@+id/imageView"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="35dp"
+                android:id="@+id/answer"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_below="@+id/num2"
+                />
+
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_toRightOf="@+id/horiz"
+                >
+                <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/table"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@android:color/holo_blue_light"
+                        android:gravity="center"
+                        >
+                        <Button
+                            android:id="@+id/one"
+                            style="@style/key"
+                            android:text="@string/number_one"/>
+
+                        <Button
+                            android:id="@+id/two"
+                            style="@style/key"
+                            android:text="@string/number_two"/>
+
+                        <Button
+                            android:id="@+id/three"
+                            style="@style/key"
+                            android:text="@string/number_three"/>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@android:color/holo_blue_light"
+                        android:gravity="center">
+
+                        <Button
+                            android:id="@+id/four"
+                            style="@style/key"
+                            android:text="@string/number_four"/>
+
+                        <Button
+                            android:id="@+id/five"
+                            style="@style/key"
+                            android:text="@string/number_five"/>
+
+                        <Button
+                            android:id="@+id/six"
+                            style="@style/key"
+                            android:text="@string/number_six"/>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@android:color/holo_blue_light"
+                        android:gravity="center"
+                        android:showDividers="middle" >
+
+                        <Button
+                            android:id="@+id/seven"
+                            style="@style/key"
+                            android:text="@string/number_seven"/>
+
+                        <Button
+                            android:id="@+id/eight"
+                            style="@style/key"
+                            android:text="@string/number_eight"/>
+
+                        <Button
+                            android:id="@+id/nine"
+                            style="@style/key"
+                            android:text="@string/number_nine"/>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@android:color/holo_blue_light"
+                        android:gravity="center"
+                        android:showDividers="middle" >
+                        <Button
+                            android:id="@+id/clear"
+                            style="@style/key"
+                            android:text="@string/clear"/>
+                        <Button
+                            android:id="@+id/zero"
+                            style="@style/key"
+                            android:text="@string/number_zero"/>
+
+                    </TableRow>
+                </TableLayout>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/key"
+                    android:layout_alignParentBottom="true"
+                    android:text="@string/enter"
+                    android:id="@+id/enter"/>
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

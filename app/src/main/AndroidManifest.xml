@@ -9,14 +9,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:largeHeap="true">
-        <activity android:name=".HomeActivity">
+        <activity android:name=".HomeActivity" android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AdditionActivity" android:configChanges="orientation|screenSize">
+        <activity android:name=".AdditionActivity" android:configChanges="orientation|keyboardHidden|screenSize">
         </activity>
         <activity android:name=".EndActivity">
         </activity>
