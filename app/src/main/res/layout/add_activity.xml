@@ -44,7 +44,15 @@
         android:orientation="vertical"
         android:layout_below="@+id/imageView"
         />
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="_________"
+            android:textSize="35dp"
+            android:id="@+id/line"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_below="@+id/num2"
+            />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,7 +60,7 @@
         android:textSize="35dp"
         android:id="@+id/answer"
         android:textColor="@color/colorPrimaryDark"
-        android:layout_below="@+id/num2"
+        android:layout_below="@+id/line"
         />
         <TextView
             android:layout_width="wrap_content"
@@ -71,6 +79,7 @@
         >
         <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/table"
+            android:layout_above="@+id/enter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -165,7 +174,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/key"
-            android:layout_below="@+id/table"
             android:layout_alignParentBottom="true"
             android:text="@string/enter"
             android:id="@+id/enter"/>

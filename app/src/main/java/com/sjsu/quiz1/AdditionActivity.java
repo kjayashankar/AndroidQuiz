@@ -81,7 +81,7 @@ public class AdditionActivity extends AppCompatActivity {
 
 
         TextView presQ = (TextView) findViewById(R.id.gap);
-        presQ.setText("Q : "+presentQuestion+" / 10");
+        presQ.setText("Ques : "+presentQuestion+" of 10");
 
 
 
@@ -336,7 +336,7 @@ public class AdditionActivity extends AppCompatActivity {
             }
     }
 
-    class CustomTimer extends CountDownTimer {
+    private class CustomTimer extends CountDownTimer {
         long resume = 0;
         TextView timer;
 

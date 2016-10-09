@@ -26,6 +26,13 @@ public class HomeActivity extends AppCompatActivity {
                 startAddition(v);
             }
         });
+        Button bSub = (Button) findViewById(R.id.subButton);
+        bSub.setOnClickListener( new View.OnClickListener(){
+            public void onClick(View v) {
+                //Context context = getApplicationContext();
+                startSubtraction(v);
+            }
+        });
     }
 
     public void startAddition(View v){
@@ -33,6 +40,13 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AdditionActivity.class);
         intent.putExtra("origin","home");
         startActivity(intent);
+
+    }
+    public void startSubtraction(View v){
+
+        Intent intent2 = new Intent(this, SubtractionActivity.class);
+        intent2.putExtra("origin","home");
+        startActivity(intent2);
 
     }
 }

@@ -1,37 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.sjsu.quiz1.SubtractFragment"
+    android:orientation="vertical"
     >
-    <LinearLayout
+
+    <RelativeLayout
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/horiz"
-                android:gravity="left">
-                <TextView
-                    android:text="TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/timer"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:orientation="vertical"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/gap"
-                    android:layout_alignParentRight="true"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="30dp"
-                    android:layout_below="@+id/num2"
-                    />
             <TextView
                 android:text="TextView"
                 android:layout_width="wrap_content"
@@ -40,36 +22,34 @@
                 android:id="@+id/num1"
                 android:orientation="vertical"/>
 
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                app:srcCompat="@drawable/plus"
-                android:id="@+id/imageView"
-                android:adjustViewBounds="false"
-                android:layout_below="@+id/num1"
-                />
-
             <TextView
                 android:text="TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:id="@+id/timer"
+                android:textColor="@color/colorPrimaryDark"
+                android:orientation="vertical"/>
+
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:textSize="30dp"
                 android:id="@+id/num2"
                 android:orientation="vertical"
-                android:layout_below="@+id/imageView"
+                android:layout_below="@+id/num1"
                 />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="______"
-                    android:textSize="35dp"
-                    android:id="@+id/line"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:layout_below="@+id/num2"
-                    />
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="_________"
+                android:textSize="35dp"
+                android:id="@+id/line"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_below="@+id/num2"
+                />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,18 +59,28 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_below="@+id/line"
                 />
-
-            </LinearLayout>
-            <RelativeLayout
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_toRightOf="@+id/horiz"
+                android:layout_height="wrap_content"
+                android:id="@+id/gap"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="30dp"
+                android:layout_below="@+id/num2"
+                />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/answer"
+
                 >
                 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/table"
+                    android:layout_above="@+id/enter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:layout_alignParentBottom="true"
                     >
 
                     <TableRow
@@ -169,23 +159,21 @@
                         <Button
                             android:id="@+id/clear"
                             style="@style/key"
-                            android:text="@string/clear"/>
+                            android:text=""/>
                         <Button
                             android:id="@+id/zero"
                             style="@style/key"
                             android:text="@string/number_zero"/>
+                        <Button
+                            android:id="@+id/clear2"
+                            style="@style/key"
+                            android:text=""/>
 
                     </TableRow>
                 </TableLayout>
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/key"
-                    android:layout_alignParentBottom="true"
-                    android:text="@string/enter"
-                    android:id="@+id/enter"/>
+
             </RelativeLayout>
         </RelativeLayout>
-    </LinearLayout>
-</LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>
