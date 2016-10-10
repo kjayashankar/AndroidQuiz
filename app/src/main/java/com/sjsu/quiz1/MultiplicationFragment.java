@@ -81,6 +81,7 @@ public class MultiplicationFragment extends Fragment {
 
 
             }
+            isPaused = getArguments().getBoolean("isPaused");
             answerString = getArguments().getString("answerString");
             answerString = answerString == null ? "" : answerString;
             correctAnswer = n1*n2;
@@ -154,8 +155,11 @@ public class MultiplicationFragment extends Fragment {
         TextView num2 = (TextView) getView().findViewById(R.id.num2);
         num2.setTextSize(30);
         num2.setText("* "+n2+"");
-
-        timerClock.start();
+        if(!isPaused){
+            timerClock.setView(timer);
+            timerClock.start();
+            onPause();
+        }
 
         Button b1 = (Button) getView().findViewById(R.id.one);
         Button b2 = (Button) getView().findViewById(R.id.two);

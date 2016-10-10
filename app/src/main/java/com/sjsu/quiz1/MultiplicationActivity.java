@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 public class MultiplicationActivity extends AppCompatActivity {
@@ -32,6 +33,32 @@ public class MultiplicationActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home: {
+                onPause();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure you want to quit ?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        MultiplicationActivity.super.onBackPressed();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        onResume();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     public void onBackPressed() {
         onPause();
@@ -82,6 +109,7 @@ public class MultiplicationActivity extends AppCompatActivity {
                 multiplicationFragment.getArguments().putInt("n2", fragment.n2);
                 multiplicationFragment.getArguments().putInt("tSec", (int) fragment.timerClock.resume);
                 multiplicationFragment.getArguments().putString("answerString",fragment.answerString);
+                multiplicationFragment.getArguments().putBoolean("isPaused",fragment.isPaused);
                 fragmentManager.beginTransaction().replace(R.id.fragment_container, multiplicationFragment, "mul").commit();
             }
         }

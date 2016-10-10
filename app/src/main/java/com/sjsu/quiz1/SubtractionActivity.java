@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 
 
 public class SubtractionActivity extends AppCompatActivity {
@@ -33,6 +34,32 @@ public class SubtractionActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home: {
+                onPause();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure you want to quit ?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        SubtractionActivity.super.onBackPressed();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        onResume();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     public void onBackPressed() {
         onPause();
@@ -82,6 +109,7 @@ public class SubtractionActivity extends AppCompatActivity {
                 subtractFragment.getArguments().putInt("n1", fragment.n1);
                 subtractFragment.getArguments().putInt("n2", fragment.n2);
                 subtractFragment.getArguments().putInt("tSec", (int) fragment.timerClock.resume);
+                subtractFragment.getArguments().putBoolean("isPaused",fragment.isPaused);
                 fragmentManager.beginTransaction().replace(R.id.fragment_container, subtractFragment, "sub").commit();
             }
         }

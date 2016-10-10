@@ -46,11 +46,7 @@ public class AdditionActivity extends AppCompatActivity {
     ImageView trueView;
     ImageView falseView;
     String answerString="";
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+    static final String TAG="AdditionActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,10 +61,6 @@ public class AdditionActivity extends AppCompatActivity {
         presentQuestion = getIntent().getIntExtra("presentQuestion", 1);
 
         init();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
@@ -76,6 +68,7 @@ public class AdditionActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home: {
+                isPaused = true;
                 timerClock.pause();
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("Are you sure you want to quit ?");
@@ -87,7 +80,8 @@ public class AdditionActivity extends AppCompatActivity {
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        timerClock = timerClock.resume();
+                        //isPaused = false;
+                        //timerClock = timerClock.resume();
                         timerClock.setView(timer);
                         timerClock.start();
                     }
@@ -103,9 +97,10 @@ public class AdditionActivity extends AppCompatActivity {
 
     public void init() {
 
+
         if (timerClock != null) {
-            timerClock.pause();
-            timerClock = new CustomTimer(timerClock.resume, 1000);
+            //timerClock.pause();
+            timerClock = timerClock.resume();
             timer = (TextView) findViewById(R.id.timer);
             timerClock.setView(timer);
         } else {
@@ -135,7 +130,7 @@ public class AdditionActivity extends AppCompatActivity {
         TextView num2 = (TextView) findViewById(R.id.num2);
         num2.setTextSize(30);
         num2.setText("+ "+n2 + "");
-
+        if(!isPaused)
         timerClock.start();
 
         Button b1 = (Button) findViewById(R.id.one);
@@ -350,7 +345,6 @@ public class AdditionActivity extends AppCompatActivity {
     }
 
     public void moveToNextScreen(boolean answer) {
-        //Toast.makeText(getApplicationContext(),answer ? "Correct Answer" : "Wrong Answer",Toast.LENGTH_SHORT).show();;
         timerClock.cancel();
         Intent intent = getIntent();
         int nTrueQuestions = intent.getIntExtra("True", 0);
@@ -380,40 +374,17 @@ public class AdditionActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Addition Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
     @Override
     public void onStart() {
         super.onStart();
+        Log.v(TAG,"on start");
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
+        Log.v(TAG,"on stop");
     }
 
     private class CustomTimer extends CountDownTimer {

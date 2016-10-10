@@ -51,6 +51,7 @@ public class SubtractFragment extends Fragment {
     static String TAG = "SubtractFragment";
     int tSec = 0;
     protected Activity mActivity;
+
     public SubtractFragment() {
         // Required empty public constructor
     }
@@ -58,7 +59,6 @@ public class SubtractFragment extends Fragment {
     public static SubtractFragment newInstance(int param1, int param2) {
 
         Log.v(TAG,"new instance");
-
         SubtractFragment fragment = new SubtractFragment();
         Bundle args = new Bundle();
         args.putInt("presentQuestion", param1);
@@ -92,6 +92,7 @@ public class SubtractFragment extends Fragment {
                     n1 = temp;
                 }
             }
+            isPaused = getArguments().getBoolean("isPaused");
             correctAnswer = n1-n2;
             tSec = getArguments().getInt("tSec");
             if(tSec != 0) {
@@ -131,8 +132,8 @@ public class SubtractFragment extends Fragment {
         Log.v(TAG,"on init");
 
             if(timerClock != null ) {
-                timerClock.cancel();
-                timerClock = new CustomTimer(timerClock.resume,1000);
+              /*  timerClock.cancel();
+                timerClock = new CustomTimer(timerClock.resume,1000);*/
                 timer = (TextView) getView().findViewById(R.id.timer);
                 timerClock.setView(timer);
             }
@@ -164,8 +165,14 @@ public class SubtractFragment extends Fragment {
             num2.setTextSize(30);
             num2.setText("- "+n2+"");
 
-            timerClock.start();
-
+            if(isPaused) {
+                timerClock.setView(timer);
+                timerClock.start();
+                onPause();
+            }
+            else {
+                timerClock.start();
+            }
             Button b1 = (Button) getView().findViewById(R.id.one);
             Button b2 = (Button) getView().findViewById(R.id.two);
             Button b3 = (Button) getView().findViewById(R.id.three);
@@ -287,7 +294,7 @@ public class SubtractFragment extends Fragment {
         if(toastValid != null)
             toastValid.cancel();
 
-        toast = new Toast(getActivity().getApplicationContext());
+        toast = new Toast(mActivity.getApplicationContext());
 
         if (answer) {
             toast.setView(trueView);
