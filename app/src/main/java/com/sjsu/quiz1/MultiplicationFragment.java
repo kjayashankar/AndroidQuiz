@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,20 +24,11 @@ import android.widget.Toast;
 import java.util.Random;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- *
- * to handle interaction events.
- * Use the {@link SubtractFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class SubtractFragment extends Fragment {
-
+public class MultiplicationFragment extends Fragment {
 
     int n1;
     int n2;
-    int correctAnswer;
+    int correctAnswer = 0;
     Toast toast = null;
     Toast toastValid = null;
     int presentQuestion ;
@@ -46,20 +38,20 @@ public class SubtractFragment extends Fragment {
     boolean isPaused = false;
     ImageView trueView ;
     ImageView falseView ;
-    String answerString;
+    String answerString = "";
     boolean retained = false;
     static String TAG = "SubtractFragment";
     int tSec = 0;
     protected Activity mActivity;
-    public SubtractFragment() {
+    public MultiplicationFragment() {
         // Required empty public constructor
     }
 
-    public static SubtractFragment newInstance(int param1, int param2) {
+    public static MultiplicationFragment newInstance(int param1, int param2) {
 
         Log.v(TAG,"new instance");
 
-        SubtractFragment fragment = new SubtractFragment();
+        MultiplicationFragment fragment = new MultiplicationFragment();
         Bundle args = new Bundle();
         args.putInt("presentQuestion", param1);
         args.putInt("True", param2);
@@ -86,13 +78,12 @@ public class SubtractFragment extends Fragment {
                 Random random = new Random();
                 n1 = random.nextInt(10);
                 n2 = random.nextInt(10);
-                if(n2 > n1) {
-                    int temp = n2;
-                    n2 = n1;
-                    n1 = temp;
-                }
+
+
             }
-            correctAnswer = n1-n2;
+            answerString = getArguments().getString("answerString");
+            answerString = answerString == null ? "" : answerString;
+            correctAnswer = n1*n2;
             tSec = getArguments().getInt("tSec");
             if(tSec != 0) {
                 timerClock = new CustomTimer(tSec, 1000);
@@ -107,22 +98,22 @@ public class SubtractFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.v(TAG,"on create view");
-        return inflater.inflate(R.layout.fragment_subtract, container, false);
+        return inflater.inflate(R.layout.add_activity, container, false);
     }
 
     @Override
     public void onStart() {
         Log.v(TAG,"on start");
 
-                super.onStart();
-                Log.v(TAG,"on start 2");
-                TextView num1 = (TextView) getView().findViewById(R.id.num1);
-                num1.setTextSize(30);
-                num1.setText(n1 + "");
-                TextView num2 = (TextView) getView().findViewById(R.id.num2);
-                num2.setTextSize(30);
-                num2.setText(n2 + "");
-                init();
+        super.onStart();
+        Log.v(TAG,"on start 2");
+        /*TextView num1 = (TextView) getView().findViewById(R.id.num1);
+        num1.setTextSize(30);
+        num1.setText(n1 + "");
+        TextView num2 = (TextView) getView().findViewById(R.id.num2);
+        num2.setTextSize(30);
+        num2.setText(n2 + "");*/
+        init();
 
     }
 
@@ -130,135 +121,163 @@ public class SubtractFragment extends Fragment {
 
         Log.v(TAG,"on init");
 
-            if(timerClock != null ) {
-                timerClock.cancel();
-                timerClock = new CustomTimer(timerClock.resume,1000);
-                timer = (TextView) getView().findViewById(R.id.timer);
-                timerClock.setView(timer);
+        if(timerClock != null ) {
+            timerClock.cancel();
+            timerClock = new CustomTimer(timerClock.resume,1000);
+            timer = (TextView) getView().findViewById(R.id.timer);
+            timerClock.setView(timer);
+        }
+        else {
+            timerClock = new CustomTimer(5000 + 300, 1000);
+            timer = (TextView) getView().findViewById(R.id.timer);
+            timerClock.setView(timer);
+        }
+
+        trueView = new ImageView(getActivity().getApplicationContext());
+        trueView.setImageResource(R.drawable.green_min);
+        falseView = new ImageView(getActivity().getApplicationContext());
+        falseView.setImageResource(R.drawable.red_wrong);
+
+
+        TextView answ = (TextView) getView().findViewById(R.id.answer);
+        answ.setText("  "+answerString);
+
+
+        TextView presQ = (TextView) getView().findViewById(R.id.gap);
+        presQ.setText("Ques : "+presentQuestion+" of 10");
+
+
+
+        TextView num1 = (TextView) getView().findViewById(R.id.num1);
+        num1.setTextSize(30);
+        num1.setText("   "+n1);
+        TextView num2 = (TextView) getView().findViewById(R.id.num2);
+        num2.setTextSize(30);
+        num2.setText("* "+n2+"");
+
+        timerClock.start();
+
+        Button b1 = (Button) getView().findViewById(R.id.one);
+        Button b2 = (Button) getView().findViewById(R.id.two);
+        Button b3 = (Button) getView().findViewById(R.id.three);
+        Button b4 = (Button) getView().findViewById(R.id.four);
+        Button b5 = (Button) getView().findViewById(R.id.five);
+        Button b6 = (Button) getView().findViewById(R.id.six);
+        Button b7 = (Button) getView().findViewById(R.id.seven);
+        Button b8 = (Button) getView().findViewById(R.id.eight);
+        Button b9 = (Button) getView().findViewById(R.id.nine);
+        Button b0 = (Button) getView().findViewById(R.id.zero);
+        Button bclear = (Button) getView().findViewById(R.id.clear);
+        Button bEnter = (Button) getView().findViewById(R.id.enter);
+
+        b1.setOnClickListener( new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                updateAnswer(1);
             }
-            else {
-                timerClock = new CustomTimer(5000 + 300, 1000);
-                timer = (TextView) getView().findViewById(R.id.timer);
-                timerClock.setView(timer);
+
+        });
+        b2.setOnClickListener( new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                updateAnswer(2);
             }
 
-            trueView = new ImageView(getActivity().getApplicationContext());
-            trueView.setImageResource(R.drawable.green_min);
-            falseView = new ImageView(getActivity().getApplicationContext());
-            falseView.setImageResource(R.drawable.red_wrong);
+        });
+        b3.setOnClickListener( new View.OnClickListener(){
 
+            @Override
+            public void onClick(View v) {
+                updateAnswer(3);
+            }
 
-            TextView answ = (TextView) getView().findViewById(R.id.answer);
-            answ.setText(answerString);
+        });
+        b4.setOnClickListener( new View.OnClickListener(){
 
+            @Override
+            public void onClick(View v) {
+                updateAnswer(4);
+            }
 
-            TextView presQ = (TextView) getView().findViewById(R.id.gap);
-            presQ.setText("Ques : "+presentQuestion+" of 10");
+        });
+        b5.setOnClickListener( new View.OnClickListener(){
 
+            @Override
+            public void onClick(View v) {
+                updateAnswer(5);
+            }
 
+        });
+        b6.setOnClickListener( new View.OnClickListener(){
 
-            TextView num1 = (TextView) getView().findViewById(R.id.num1);
-            num1.setTextSize(30);
-            num1.setText("  "+n1);
-            TextView num2 = (TextView) getView().findViewById(R.id.num2);
-            num2.setTextSize(30);
-            num2.setText("- "+n2+"");
+            @Override
+            public void onClick(View v) {
+                updateAnswer(6);
+            }
 
-            timerClock.start();
+        });
+        b7.setOnClickListener( new View.OnClickListener(){
 
-            Button b1 = (Button) getView().findViewById(R.id.one);
-            Button b2 = (Button) getView().findViewById(R.id.two);
-            Button b3 = (Button) getView().findViewById(R.id.three);
-            Button b4 = (Button) getView().findViewById(R.id.four);
-            Button b5 = (Button) getView().findViewById(R.id.five);
-            Button b6 = (Button) getView().findViewById(R.id.six);
-            Button b7 = (Button) getView().findViewById(R.id.seven);
-            Button b8 = (Button) getView().findViewById(R.id.eight);
-            Button b9 = (Button) getView().findViewById(R.id.nine);
-            Button b0 = (Button) getView().findViewById(R.id.zero);
-            Button bclear = (Button) getView().findViewById(R.id.clear);
-            Button bEnter = (Button) getView().findViewById(R.id.enter);
+            @Override
+            public void onClick(View v) {
+                updateAnswer(7);
+            }
 
-            b1.setOnClickListener( new View.OnClickListener(){
+        });
+        b8.setOnClickListener( new View.OnClickListener(){
 
-                @Override
-                public void onClick(View v) {
-                    updateAnswer(1);
+            @Override
+            public void onClick(View v) {
+                updateAnswer(8);
+            }
+
+        });
+        b9.setOnClickListener( new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                updateAnswer(9);
+            }
+
+        });
+        b0.setOnClickListener( new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                updateAnswer(0);
+            }
+
+        });
+        bclear.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                updateAnswer(11);
+            }
+
+        });
+        bEnter.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                TextView num1 = (TextView) getView().findViewById(R.id.answer);
+                String existing = num1.getText().toString().trim();
+                String e = getIntValue(existing);
+                if (e.length() > 2 || e.length() == 0) {
+                    showToast("Enter valid number");
+                } else {
+                    int givenAnswer = Integer.parseInt(e);
+                    if (givenAnswer == correctAnswer) {
+                        nextScreen(true);
+                    } else
+                        nextScreen(false);
                 }
+            }
 
-            });
-            b2.setOnClickListener( new View.OnClickListener(){
+        });
 
-                @Override
-                public void onClick(View v) {
-                    updateAnswer(2);
-                }
-
-            });
-            b3.setOnClickListener( new View.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    updateAnswer(3);
-                }
-
-            });
-            b4.setOnClickListener( new View.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    updateAnswer(4);
-                }
-
-            });
-            b5.setOnClickListener( new View.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    updateAnswer(5);
-                }
-
-            });
-            b6.setOnClickListener( new View.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    updateAnswer(6);
-                }
-
-            });
-            b7.setOnClickListener( new View.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    updateAnswer(7);
-                }
-
-            });
-            b8.setOnClickListener( new View.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    updateAnswer(8);
-                }
-
-            });
-            b9.setOnClickListener( new View.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    updateAnswer(9);
-                }
-
-            });
-            b0.setOnClickListener( new View.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    updateAnswer(0);
-                }
-
-            });
     }
 
     public void showToast(String msg) {
@@ -271,11 +290,20 @@ public class SubtractFragment extends Fragment {
 
     public void updateAnswer(int i){
         TextView num1 = (TextView) getView().findViewById(R.id.answer);
-        num1.setText("  "+i+"");
-        if (i == correctAnswer) {
-            nextScreen(true);
+        answerString = num1.getText().toString().trim();
+        String e = getIntValue(answerString);
+
+        if (e.length() > 2) {
+            e = "";
+        }
+        if (i == 11)
+            answerString = "";
+        else
+            answerString = e + i;
+        if (answerString.length() > 2) {
+            showToast("Number cannot exceed 2 digits");
         } else
-            nextScreen(false);
+            num1.setText("  "+answerString);
 
     }
     public String getIntValue(String existing) {
@@ -287,7 +315,7 @@ public class SubtractFragment extends Fragment {
         if(toastValid != null)
             toastValid.cancel();
 
-        toast = new Toast(getActivity().getApplicationContext());
+        toast = new Toast(mActivity.getApplicationContext());
 
         if (answer) {
             toast.setView(trueView);
@@ -330,9 +358,9 @@ public class SubtractFragment extends Fragment {
 
             startActivity(newIntent);*/
 
-            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-            Fragment subFragment = SubtractFragment.newInstance(presentQuestion,nTrueQuestions);
-            fragmentTransaction.replace(R.id.fragment_container, subFragment, "sub");
+            FragmentTransaction fragmentTransaction = ((FragmentActivity)mActivity).getSupportFragmentManager().beginTransaction();
+            Fragment mulFragment = MultiplicationFragment.newInstance(presentQuestion,nTrueQuestions);
+            fragmentTransaction.replace(R.id.fragment_container, mulFragment, "mul");
             fragmentTransaction.commit();
         } else {
             if (toast != null)
@@ -378,17 +406,21 @@ public class SubtractFragment extends Fragment {
     }
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mActivity = activity;
+        //mActivity = activity;
     }
 
     @Override
     public void onAttach(Context context) {
+
         super.onAttach(context);
+        mActivity = (Activity) context;
     }
+
 
     @Override
     public void onDetach() {
         super.onDetach();
+        mActivity = null;
     }
 
     class CustomTimer extends CountDownTimer {

@@ -26,14 +26,6 @@
             android:id="@+id/timer"
             android:textColor="@color/colorPrimaryDark"
             android:orientation="vertical"/>
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        app:srcCompat="@drawable/plus"
-        android:id="@+id/imageView"
-        android:adjustViewBounds="false"
-        android:layout_below="@+id/num1"
-        />
 
     <TextView
         android:text="TextView"
@@ -42,12 +34,12 @@
         android:textSize="30dp"
         android:id="@+id/num2"
         android:orientation="vertical"
-        android:layout_below="@+id/imageView"
+        android:layout_below="@+id/num1"
         />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="_________"
+            android:text="________"
             android:textSize="35dp"
             android:id="@+id/line"
             android:textColor="@color/colorPrimaryDark"

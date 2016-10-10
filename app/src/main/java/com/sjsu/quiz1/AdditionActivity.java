@@ -5,18 +5,26 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.Random;
 
@@ -31,39 +39,76 @@ public class AdditionActivity extends AppCompatActivity {
     int correctAnswer;
     Toast toast = null;
     Toast toastValid = null;
-    int presentQuestion ;
+    int presentQuestion;
     CustomTimer timerClock = null;
-    TextView timer ;
+    TextView timer;
     boolean isPaused = false;
-    ImageView trueView ;
-    ImageView falseView ;
-    String answerString;
+    ImageView trueView;
+    ImageView falseView;
+    String answerString="";
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(0, 0);
         setContentView(R.layout.add_activity);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Random random = new Random();
         n1 = random.nextInt(10);
         n2 = random.nextInt(10);
-        correctAnswer = n1+n2;
-        presentQuestion = getIntent().getIntExtra("presentQuestion",1);
+        correctAnswer = n1 + n2;
+        presentQuestion = getIntent().getIntExtra("presentQuestion", 1);
 
         init();
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    public void init(){
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home: {
+                timerClock.pause();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure you want to quit ?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        timerClock.cancel();
+                        AdditionActivity.super.onBackPressed();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        timerClock = timerClock.resume();
+                        timerClock.setView(timer);
+                        timerClock.start();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-        if(timerClock != null ) {
+    public void init() {
+
+        if (timerClock != null) {
             timerClock.pause();
-            timerClock = new CustomTimer(timerClock.resume,1000);
+            timerClock = new CustomTimer(timerClock.resume, 1000);
             timer = (TextView) findViewById(R.id.timer);
             timerClock.setView(timer);
-        }
-        else {
+        } else {
             timerClock = new CustomTimer(5000, 1000);
             timer = (TextView) findViewById(R.id.timer);
             timerClock.setView(timer);
@@ -77,20 +122,19 @@ public class AdditionActivity extends AppCompatActivity {
 
 
         TextView answ = (TextView) findViewById(R.id.answer);
-        answ.setText(answerString);
+        answ.setText("  "+answerString);
 
 
         TextView presQ = (TextView) findViewById(R.id.gap);
-        presQ.setText("Ques : "+presentQuestion+" of 10");
-
+        presQ.setText("Ques : " + presentQuestion + " of 10");
 
 
         TextView num1 = (TextView) findViewById(R.id.num1);
         num1.setTextSize(30);
-        num1.setText(n1+"");
+        num1.setText("   "+n1 + "");
         TextView num2 = (TextView) findViewById(R.id.num2);
         num2.setTextSize(30);
-        num2.setText(n2+"");
+        num2.setText("+ "+n2 + "");
 
         timerClock.start();
 
@@ -107,7 +151,7 @@ public class AdditionActivity extends AppCompatActivity {
         Button bclear = (Button) findViewById(R.id.clear);
         Button bEnter = (Button) findViewById(R.id.enter);
 
-        b1.setOnClickListener( new View.OnClickListener(){
+        b1.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -115,7 +159,7 @@ public class AdditionActivity extends AppCompatActivity {
             }
 
         });
-        b2.setOnClickListener( new View.OnClickListener(){
+        b2.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -123,7 +167,7 @@ public class AdditionActivity extends AppCompatActivity {
             }
 
         });
-        b3.setOnClickListener( new View.OnClickListener(){
+        b3.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -131,7 +175,7 @@ public class AdditionActivity extends AppCompatActivity {
             }
 
         });
-        b4.setOnClickListener( new View.OnClickListener(){
+        b4.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -139,7 +183,7 @@ public class AdditionActivity extends AppCompatActivity {
             }
 
         });
-        b5.setOnClickListener( new View.OnClickListener(){
+        b5.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -147,7 +191,7 @@ public class AdditionActivity extends AppCompatActivity {
             }
 
         });
-        b6.setOnClickListener( new View.OnClickListener(){
+        b6.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -155,7 +199,7 @@ public class AdditionActivity extends AppCompatActivity {
             }
 
         });
-        b7.setOnClickListener( new View.OnClickListener(){
+        b7.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -163,7 +207,7 @@ public class AdditionActivity extends AppCompatActivity {
             }
 
         });
-        b8.setOnClickListener( new View.OnClickListener(){
+        b8.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -171,7 +215,7 @@ public class AdditionActivity extends AppCompatActivity {
             }
 
         });
-        b9.setOnClickListener( new View.OnClickListener(){
+        b9.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -179,7 +223,7 @@ public class AdditionActivity extends AppCompatActivity {
             }
 
         });
-        b0.setOnClickListener( new View.OnClickListener(){
+        b0.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -187,7 +231,7 @@ public class AdditionActivity extends AppCompatActivity {
             }
 
         });
-        bclear.setOnClickListener( new View.OnClickListener(){
+        bclear.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -195,17 +239,16 @@ public class AdditionActivity extends AppCompatActivity {
             }
 
         });
-        bEnter.setOnClickListener( new View.OnClickListener(){
+        bEnter.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 TextView num1 = (TextView) findViewById(R.id.answer);
-                String existing = num1.getText().toString();
+                String existing = num1.getText().toString().trim();
                 String e = getIntValue(existing);
-                if(e.length() > 2 || e.length() == 0) {
+                if (e.length() > 2 || e.length() == 0) {
                     showToast("Enter valid number");
-                }
-                else {
+                } else {
                     int givenAnswer = Integer.parseInt(e);
                     if (givenAnswer == correctAnswer) {
                         nextScreen(true);
@@ -219,31 +262,31 @@ public class AdditionActivity extends AppCompatActivity {
     }
 
     public void showToast(String msg) {
-        if(toastValid != null){
+        if (toastValid != null) {
             toastValid.cancel();
         }
-        toastValid = Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT);
+        toastValid = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
         toastValid.show();
     }
 
-    public void updateAnswer(int i){
+    public void updateAnswer(int i) {
         TextView num1 = (TextView) findViewById(R.id.answer);
-        answerString = num1.getText().toString();
+        answerString = num1.getText().toString().trim();
         String e = getIntValue(answerString);
 
-        if(e.length() > 2) {
-            e="";
+        if (e.length() > 2) {
+            e = "";
         }
-        if(i == 11)
-            answerString="";
+        if (i == 11)
+            answerString = "";
         else
-            answerString=e+i;
-        if(answerString.length() > 2){
+            answerString = e + i;
+        if (answerString.length() > 2) {
             showToast("Number cannot exceed 2 digits");
-        }
-        else
-            num1.setText(answerString);
+        } else
+            num1.setText("  "+answerString);
     }
+
     public String getIntValue(String existing) {
         return existing;
     }
@@ -271,9 +314,10 @@ public class AdditionActivity extends AppCompatActivity {
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
+
     public void nextScreen(final boolean answer) {
 
-        if(toastValid != null)
+        if (toastValid != null)
             toastValid.cancel();
 
         toast = new Toast(getApplicationContext());
@@ -290,8 +334,7 @@ public class AdditionActivity extends AppCompatActivity {
                     moveToNextScreen(true);
                 }
             }, 200);
-        }
-        else{
+        } else {
             toast.setView(falseView);
 
             toast.show();
@@ -305,35 +348,72 @@ public class AdditionActivity extends AppCompatActivity {
             }, 200);
         }
     }
-    public void moveToNextScreen(boolean answer) {
-            //Toast.makeText(getApplicationContext(),answer ? "Correct Answer" : "Wrong Answer",Toast.LENGTH_SHORT).show();;
-            timerClock.cancel();
-            Intent intent = getIntent();
-            int nTrueQuestions = intent.getIntExtra("True", 0);
-            nTrueQuestions = answer ? nTrueQuestions + 1 : nTrueQuestions;
-            if (++presentQuestion <= 10) {
-                Intent newIntent = new Intent(getApplicationContext(), AdditionActivity.class);
-                newIntent.putExtra("True", nTrueQuestions);
-                newIntent.putExtra("presentQuestion", presentQuestion);
-                newIntent.putExtra("ParentClassSource", "com.sjsu.quiz1.HomeActivity");
 
-                newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                finish();
-                startActivity(newIntent);
-            } else {
-                if (toast != null)
-                    toast.cancel();
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Your score is "+nTrueQuestions +" / 10");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        AdditionActivity.super.onBackPressed();
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.setCanceledOnTouchOutside(false);
-                dialog.show();
-            }
+    public void moveToNextScreen(boolean answer) {
+        //Toast.makeText(getApplicationContext(),answer ? "Correct Answer" : "Wrong Answer",Toast.LENGTH_SHORT).show();;
+        timerClock.cancel();
+        Intent intent = getIntent();
+        int nTrueQuestions = intent.getIntExtra("True", 0);
+        nTrueQuestions = answer ? nTrueQuestions + 1 : nTrueQuestions;
+        if (++presentQuestion <= 10) {
+            Intent newIntent = new Intent(getApplicationContext(), AdditionActivity.class);
+            newIntent.putExtra("True", nTrueQuestions);
+            newIntent.putExtra("presentQuestion", presentQuestion);
+            newIntent.putExtra("ParentClassSource", "com.sjsu.quiz1.HomeActivity");
+
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            finish();
+            startActivity(newIntent);
+        } else {
+            if (toast != null)
+                toast.cancel();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Your score is " + nTrueQuestions + " / 10");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    AdditionActivity.super.onBackPressed();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+        }
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Addition Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
     }
 
     private class CustomTimer extends CountDownTimer {
@@ -341,7 +421,7 @@ public class AdditionActivity extends AppCompatActivity {
         TextView timer;
 
         public CustomTimer(long millFuture, long gap) {
-            super(millFuture,gap);
+            super(millFuture, gap);
         }
 
         public void setView(TextView view) {
@@ -349,29 +429,30 @@ public class AdditionActivity extends AppCompatActivity {
         }
 
         public void onTick(long millisUntilFinished) {
-                resume = millisUntilFinished;
-                timer.setTextSize(25);
-                timer.setText("Timer : " + millisUntilFinished / 1000);
+            resume = millisUntilFinished;
+            timer.setTextSize(25);
+            timer.setText("Timer : " + millisUntilFinished / 1000);
         }
 
         public void onFinish() {
 
-            timer.setText("Timer : 0" );
+            timer.setText("Timer : 0");
             nextScreen(false);
         }
 
-        public void pause(){
+        public void pause() {
             super.cancel();
         }
 
-        public CustomTimer resume(){
-            if(resume > 0)
-                return new CustomTimer(resume,1000);
+        public CustomTimer resume() {
+            if (resume > 0)
+                return new CustomTimer(resume, 1000);
             else
-                return new CustomTimer(5000,1000);
+                return new CustomTimer(5000, 1000);
         }
 
     }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -382,11 +463,11 @@ public class AdditionActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if(isPaused) {
+        if (isPaused) {
             isPaused = false;
-              timerClock = timerClock.resume();
-              timerClock.setView(timer);
-              timerClock.start();
+            timerClock = timerClock.resume();
+            timerClock.setView(timer);
+            timerClock.start();
         }
     }
 

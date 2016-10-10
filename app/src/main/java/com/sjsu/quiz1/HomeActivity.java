@@ -33,6 +33,13 @@ public class HomeActivity extends AppCompatActivity {
                 startSubtraction(v);
             }
         });
+        Button bMul = (Button) findViewById(R.id.prodButton);
+        bMul.setOnClickListener( new View.OnClickListener(){
+            public void onClick(View v) {
+                //Context context = getApplicationContext();
+                startProduction(v);
+            }
+        });
     }
 
     public void startAddition(View v){
@@ -45,6 +52,13 @@ public class HomeActivity extends AppCompatActivity {
     public void startSubtraction(View v){
 
         Intent intent2 = new Intent(this, SubtractionActivity.class);
+        intent2.putExtra("origin","home");
+        startActivity(intent2);
+
+    }
+    public void startProduction(View v){
+
+        Intent intent2 = new Intent(this, MultiplicationActivity.class);
         intent2.putExtra("origin","home");
         startActivity(intent2);
 
